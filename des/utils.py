@@ -25,3 +25,7 @@ def pad_string(message: str, block_size=64) -> str:
     padding_needed = block_size - (len(binary_message) % block_size)
     padded_binary_message = binary_message + '0' * padding_needed 
     return padded_binary_message
+
+def bin_to_text(binary_string: str) -> str:
+    text = ''.join(chr(int(binary_string[i:i+8], 2)) for i in range(0, len(binary_string), 8))
+    return text.strip()  

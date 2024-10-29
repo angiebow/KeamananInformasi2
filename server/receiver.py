@@ -1,9 +1,10 @@
 import socket
 from des.DES import DES
+from des.utils import bin_to_text
 
 IP = "127.0.0.1"
 PORT = 65432
-DES_KEY = 12345678  
+DES_KEY = 12345678 
 
 def main():
     des_instance = DES(DES_KEY)  
@@ -19,7 +20,8 @@ def main():
             encrypted_message = conn.recv(1024).decode()
             print("Received encrypted message:", encrypted_message)
 
-            decrypted_message = des_instance.decrypt(encrypted_message)
+            decrypted_binary = des_instance.decrypt(encrypted_message)
+            decrypted_message = bin_to_text(decrypted_binary)
             print("Decrypted message:", decrypted_message)
 
 if __name__ == "__main__":
