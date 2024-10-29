@@ -19,3 +19,9 @@ def mod(a, b):
 def left_circ_shift(binary: str, shift: int) -> str:
     shift = shift % len(binary)
     return binary[shift:] + binary[0: shift]
+
+def pad_string(message: str, block_size=64) -> str:
+    binary_message = ''.join(f"{ord(char):08b}" for char in message)  
+    padding_needed = block_size - (len(binary_message) % block_size)
+    padded_binary_message = binary_message + '0' * padding_needed 
+    return padded_binary_message
