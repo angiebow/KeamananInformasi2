@@ -1,4 +1,7 @@
 import socket
+# import os
+# import sys
+# sys.path.append(os.path.abspath('../'))
 from des.DES import DES
 from des.utils import pad_string
 
@@ -8,7 +11,8 @@ DES_KEY = 12345678
 
 def main():
     des_instance = DES(DES_KEY)
-    message = "This is a longer message that needs to be encrypted."
+    # message = "This is a longer message that needs to be encrypted."
+    message = input("Enter message to send: ")
     padded_message = pad_string(message)  
     
     encrypted_chunks = [des_instance.encrypt(padded_message[i:i+64]) for i in range(0, len(padded_message), 64)]

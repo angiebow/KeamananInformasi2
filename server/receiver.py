@@ -1,4 +1,7 @@
 import socket
+# import os
+# import sys
+# sys.path.append(os.path.abspath('../'))
 from des.DES import DES
 from des.utils import bin_to_text
 
@@ -17,7 +20,7 @@ def main():
         conn, addr = s.accept()
         with conn:
             print("Connected by", addr)
-            encrypted_message = conn.recv(1024).decode()
+            encrypted_message = conn.recv(4096).decode()
             print("Received encrypted message:", encrypted_message)
 
             decrypted_chunks = [des_instance.decrypt(encrypted_message[i:i+64]) for i in range(0, len(encrypted_message), 64)]
