@@ -14,4 +14,12 @@ Pengembangan program Percakapan antara dua perangkat dari Tugas 2:
 2.⁠ ⁠Public key dari RSA harus diperoleh melalui Public Key Authority
 3.⁠ ⁠Pengiriman Key DES harus menggunakan Public-Key Cryptosystems
 
+Program flow
+	•	Jalankan pka.py terlebih dahulu untuk menghasilkan kunci.
+	•	Salin public.pem ke direktori client dan server.
+
+  1.	PKA membuat pasangan kunci RSA (public & private).
+	2.	Client mendapatkan public.pem dari PKA dan mengenkripsi kunci DES menggunakan public key RSA.
+	3.	Client mengirim kunci DES terenkripsi ke server.
+	4.	Server menerima kunci DES terenkripsi, mendekripsinya menggunakan private key RSA, dan menggunakan kunci DES untuk komunikasi selanjutnya.
 ```

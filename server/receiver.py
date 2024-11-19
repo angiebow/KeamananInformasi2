@@ -1,7 +1,8 @@
+#receiver.py
 import socket
-# import os
-# import sys
-# sys.path.append(os.path.abspath('../'))
+import os
+import sys
+sys.path.append(os.path.abspath('../'))
 from des.DES import DES
 from des.utils import bin_to_text
 

@@ -1,18 +1,15 @@
-# server/receiver.py
 import socket
 import threading
-import os
-import sys
-
-sys.path.append(os.path.abspath('../'))
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
 from des.DES import DES
 from des.utils import bin_to_text
 
 IP = "127.0.0.1"
 PORT = 65432
-DES_KEY = 12345678
 
-clients = []  # Store active client connections
+clients = []
+DES_KEY = None 
 
 def broadcast(message, sender_conn):
     """Send a message to all connected clients except the sender."""
@@ -24,16 +21,22 @@ def broadcast(message, sender_conn):
                 clients.remove(client)
 
 def handle_client(conn, addr):
-    """Handle communication with a client."""
-    des_instance = DES(DES_KEY)
+    global DES_KEY
     print(f"Client {addr} connected.")
+    encrypted_key = conn.recv(256)  
+    with open("private.pem", "rb") as priv_file:
+        private_key = RSA.import_key(priv_file.read())
+        cipher_rsa = PKCS1_OAEP.new(private_key)
+        DES_KEY = cipher_rsa.decrypt(encrypted_key)
+    print(f"Received DES key: {DES_KEY.decode()}")
+
+    des_instance = DES(int(DES_KEY.decode()))
     while True:
         try:
             encrypted_message = conn.recv(1024).decode()
             if not encrypted_message:
-                break  # Client disconnected
+                break
 
-            print(f"Received encrypted message from {addr}: {encrypted_message}")
             decrypted_chunks = [
                 des_instance.decrypt(encrypted_message[i:i+64]) for i in range(0, len(encrypted_message), 64)
             ]
@@ -41,10 +44,9 @@ def handle_client(conn, addr):
             decrypted_message = bin_to_text(decrypted_binary)
             print(f"Message from {addr}: {decrypted_message}")
 
-            broadcast(f"{addr}: {decrypted_message}", conn)  # Send message to other clients
-
+            broadcast(f"{addr}: {decrypted_message}", conn)
         except ConnectionResetError:
-            break  # Handle client disconnect
+            break
 
     print(f"Client {addr} disconnected.")
     clients.remove(conn)
