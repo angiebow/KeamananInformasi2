@@ -25,6 +25,17 @@ def broadcast(message, sender_conn):
 def handle_client(conn, addr):
     global DES_KEY
     print(f"Client {addr} connected.")
+
+    # Receive username
+    username = conn.recv(1024).decode()
+    if conn not in clients:
+        clients.append(conn)
+    print(f"Received username: {username} {len(clients)}")
+
+    # Mengirimkan konfirmasi penerimaan username ke klien
+    conn.sendall("OK".encode())
+    print("Username acknowledged, waiting for DES key.")
+
     encrypted_key = conn.recv(256)  
 
     script_dir = os.path.dirname(__file__)
@@ -34,7 +45,7 @@ def handle_client(conn, addr):
         private_key = RSA.import_key(priv_file.read())
         cipher_rsa = PKCS1_OAEP.new(private_key)
         DES_KEY = cipher_rsa.decrypt(encrypted_key)
-    print(f"Received DES key: {DES_KEY.decode()}")
+    print(f"Received DES key {username}: {DES_KEY.decode()}")
 
     des_instance = DES(int(DES_KEY.decode()))
     while True:
@@ -42,6 +53,7 @@ def handle_client(conn, addr):
             encrypted_message = conn.recv(1024).decode()
             if not encrypted_message:
                 break
+            print(f"Encrypted message from {username}: {encrypted_message}")
 
             # Decrypt message
             decrypted_chunks = [
@@ -52,11 +64,11 @@ def handle_client(conn, addr):
             print(f"Message from {addr}: {decrypted_message}")
 
             # Broadcast decrypted message to all clients
-            broadcast(f"{addr}: {decrypted_message}", conn)
+            broadcast(f"{username}: {decrypted_message}", conn)
         except ConnectionResetError:
             break
 
-    print(f"Client {addr} disconnected.")
+    print(f"Client {username} disconnected.")
     clients.remove(conn)
     conn.close()
 
