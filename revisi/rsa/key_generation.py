@@ -1,9 +1,7 @@
-from utils.math_utils import gcd, mod_inverse
-
-def rsa_key_generation():
-    """Generate RSA public and private keys."""
-    p = 61
-    q = 53
+def pka_key_generation():
+    """Generate PKA public and private keys."""
+    p = 47
+    q = 59
 
     n = p * q                 
     phi = (p - 1) * (q - 1)   
