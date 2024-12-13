@@ -32,7 +32,6 @@ def handle_client(conn, addr):
         clients.append(conn)
     print(f"Received username: {username} {len(clients)}")
 
-    # Mengirimkan konfirmasi penerimaan username ke klien
     conn.sendall("OK".encode())
     print("Username acknowledged, waiting for DES key.")
 
