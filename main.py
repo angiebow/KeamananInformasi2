@@ -1,6 +1,7 @@
-from rsa.key_generation import rsa_key_generation, pka_key_generation
-from rsa.encryption import rsa_encrypt
-from rsa.decryption import rsa_decrypt
+#main.py
+from revisi.rsa.key_generation import rsa_key_generation, pka_key_generation
+from revisi.rsa.encryption import rsa_encrypt
+from revisi.rsa.decryption import rsa_decrypt
 
 def main():
     print("=== PKA Key Generation ===")
@@ -20,3 +21,6 @@ def main():
     print("\n=== User2 Decrypts the Public Key ===")
     user1_key_decrypted = rsa_decrypt(user1_key_encrypted, pka_public_key)
     print(f"Decrypted User1 Public Key: {user1_key_decrypted}")
+
+if __name__ == "__main__":
+    main()

@@ -1,3 +1,4 @@
+#math_utils.py
 def gcd(a, b):
     while b != 0:
         a, b = b, a % b
@@ -14,4 +15,4 @@ def extended_euclidean(a, b):
 
 def mod_inverse(e, phi):
     inv = extended_euclidean(e, phi)
-    return inv % phi  
+    return inv % phi
