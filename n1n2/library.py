@@ -23,13 +23,16 @@ def splitIntoGroups(string,length):
             temp = ""
     return results
 
-def decrypt(self, ciphertext):
-    plaintext_int = pow(ciphertext, self.d, self.n)
-    try:
-        plaintext = plaintext_int.to_bytes((plaintext_int.bit_length() + 7) // 8, 'big').decode('utf-8')
-        return plaintext
-    except UnicodeDecodeError:
-        return plaintext_int
+def decrypt(message):
+    ki = des.DES()
+    entries = splitIntoGroups(message,8)
+    decryptedMessages = []
+    for i in range(len(entries)):
+        decryption = ki.Decryption(entries[i])
+        decryptedMessages.append(decryption)
+    decryptedMessage ="".join(decryptedMessages)
+    decryptedMessage = text_from_bits(decryptedMessage)
+    return decryptedMessage
 
 def encrypt(message):
     ki = des.DES()
