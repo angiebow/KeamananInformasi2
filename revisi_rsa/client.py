@@ -1,7 +1,7 @@
 import asyncio
 import logging
-from crypto import RSA, PKA, DES
-import utils
+from .cryptolib import RSA, PKA, DES  # Updated import statement
+# import utils
 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
@@ -18,6 +18,7 @@ async def communicate_with_server():
 
     # Encrypt DES key and send it to the server
     des_key = "1001100111"
+    print("des key: ", des_key)
     encrypted_des_key = rsa.encrypt(des_key, eval(server_public_key.decode()))
     writer.write(str(encrypted_des_key).encode())
     await writer.drain()

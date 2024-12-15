@@ -1,7 +1,7 @@
 import asyncio
 import logging
-from crypto import RSA, PKA, DES
-import utils
+from .cryptolib import RSA, PKA, DES  # Updated import statement
+# import utils
 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
@@ -21,6 +21,7 @@ async def handle_client(reader, writer):
 
     # Receive encrypted DES key
     encrypted_des_key = await reader.read(1024)
+    print("encrypted des: ", encrypted_des_key)
     des_key = rsa.decrypt(int(encrypted_des_key.decode()))
     logging.info(f"Received DES key: {des_key}")
 
